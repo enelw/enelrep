@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>mine</title>
+    <link rel="icon" href="knife.gif" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        body {
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            cursor: none;
+        }
+
+        .trail {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: url('knife.gif') no-repeat center;
+            background-size: contain;
+            pointer-events: none;
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            animation: fadeOut 0.4s ease-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+        
+
+        #custom-cursor {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: url('knife.gif') no-repeat center;
+            background-size: contain;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            width: 420px;
+            transform: perspective(1000px);
+            transition: transform 0.2s ease;
+        }
+
+        .hover-effect:hover {
+            transform: scale(1.05);
+        }
+
+        .card-container {
+            perspective: 1000px;
+        }
+
+        .glass:hover {
+            transform: rotateY(var(--rotateY)) rotateX(var(--rotateX));
+        }
+
+        .avatar {
+            position: absolute;
+            bottom: -40px;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #000;
+        }
+
+        .banner {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .name {
+            margin-top: 50px;
+            font-weight: 700;
+            font-size: 28px;
+        }
+
+        .social-btn {
+            @apply bg-gray-800 py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-gray-700 transition-all;
+        }
+
+        .about-title {
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .about-text {
+            font-size: 13px;
+            color: #ddd;
+        }
+
+        #view-count {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 16px;
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="custom-cursor"></div>
+
+    <!-- Audio for Music -->
+    <audio id="background-music" autoplay loop>
+        <source src="misery.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="card-container" id="card">
+        <div class="glass p-6" id="profile-card">
+            <!-- Banner Image -->
+            <div class="relative">
+                <img src="banner.jpg" alt="Banner" class="banner">
+                <img src="pfp.jpg" alt="Profile" class="avatar">
+            </div>
+
+            <!-- Profile Content -->
+            <div class="p-6">
+                <h1 class="name">Enel</h1>
+                <div class="flex items-center gap-2 mt-2">
+                    <span> her distortion.</span>
+                </div>
+
+                <div class="mt-4">
+                    <h2 class="about-title">ABOUT ME</h2>
+                    <p class="about-text">9 months ago</p>
+                </div>
+
+                <!-- Social Buttons -->
+                <div class="mt-6">
+                    <h2 class="about-title">CONNECTIONS</h2>
+                    <div class="grid grid-cols-2 gap-3 mt-2">
+                        <a href="https://instagram.com/enelw.ig" class="social-btn">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="w-5 h-5"> Instagram
+                        </a>
+                    </div>
+                </div>
+
+                <!-- View Counter -->
+                <div id="view-count">👁️ Views: <span id="counter">0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Card Tilt Effect
+        const card = document.getElementById('profile-card');
+        const cursor = document.getElementById('custom-cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 25;
+            const y = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.setProperty('--rotateY', x + 'deg');
+            card.style.setProperty('--rotateX', -y + 'deg');
+
+            cursor.style.left = `${e.pageX}px`;
+            cursor.style.top = `${e.pageY}px`;
+        });
+
+        // Typing effect for title
+        const titleText = "Enel.";
+        let index = 0;
+        function typeTitle() {
+            document.title = titleText.slice(0, index);
+            index++;
+            if (index > titleText.length) index = 1;
+        }
+        setInterval(typeTitle, 400);
+
+        // View Counter
+        const counter = document.getElementById('counter');
+        let views = localStorage.getItem('viewCount') || 0;
+        views++;
+        localStorage.setItem('viewCount', views);
+        counter.textContent = views;
+    </script>
+
+    <audio id="background-music" autoplay loop>
+        <source src="misery.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const audio = document.getElementById("background-music");
+    
+            // Try to play the music after user interacts
+            document.body.addEventListener("click", function () {
+                if (audio.paused) {
+                    audio.play().catch(error => console.log("Autoplay blocked:", error));
+                }
+            });
+        });
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let head = document.getElementsByTagName('head')[0];
+
+        let metaTags = [
+            { property: "og:title", content: "@judah.tk |" },
+            { property: "og:description", content: "Private biolink" },
+            { property: "og:image", content: "https://judah.fwh.is/banner.png" },
+            { property: "og:url", content: "https://judah.fwh.is/" },
+            { property: "og:type", content: "website" }
+        ];
+
+        metaTags.forEach(tag => {
+            let meta = document.createElement('meta');
+            meta.setAttribute("property", tag.property);
+            meta.setAttribute("content", tag.content);
+            head.appendChild(meta);
+        });
+    });
+</script>
+
+
+    <script src="index.js"></script>
+</body>
+</html>
+
+</body>
+</html>
